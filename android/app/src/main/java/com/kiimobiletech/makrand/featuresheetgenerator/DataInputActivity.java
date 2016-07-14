@@ -22,6 +22,12 @@ import android.widget.TextView;
 public class DataInputActivity extends AppCompatActivity {
 
     /**
+     * The fragment argument representing the section number for this
+     * fragment.
+     */
+    private static final String ARG_PLACE_HOLDER_STRING = "place_holder_string";
+
+    /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
      * {@link FragmentPagerAdapter} derivative, which will keep every
@@ -35,6 +41,7 @@ public class DataInputActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +68,20 @@ public class DataInputActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Snackbar.make(view, "Will generate document in future", Snackbar.LENGTH_LONG)
+                        .setAction("Dismiss", new View.OnClickListener() {
+                            //TODO: Check if this actually works. If not then go for alternate implementation.
+                            //currently assuming that an empty click will automatically dismiss the snackbar
+                            //alternate makes final object from the snackbar and then calls the dismiss() method on it
+                            //http://stackoverflow.com/questions/30729312/how-to-dismiss-a-snackbar-using-its-own-action-button
+                            @Override
+                            public void onClick(View v) {}
+                        })
+                        .show();
             }
         });
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,16 +104,10 @@ public class DataInputActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
     /**
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
 
         public PlaceholderFragment() {
         }
@@ -108,10 +116,10 @@ public class DataInputActivity extends AppCompatActivity {
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+        public static PlaceholderFragment newInstance(String placeHolderString) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putString(ARG_PLACE_HOLDER_STRING, placeHolderString);
             fragment.setArguments(args);
             return fragment;
         }
@@ -121,7 +129,7 @@ public class DataInputActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_data_input, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            textView.setText(new StringBuilder().append(R.string.section_format).append(getArguments().getString(ARG_PLACE_HOLDER_STRING)).toString());
             return rootView;
         }
     }
@@ -140,7 +148,24 @@ public class DataInputActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+//            return PlaceholderFragment.newInstance(position + 1);
+
+//            PlaceholderFragment fragment = new PlaceholderFragment();
+//            Bundle args = new Bundle();
+//            fragment.setArguments(args);
+
+            Fragment fragment = null;
+            switch (position) {
+                case 0: //agent info
+                    fragment = AgentInfoFragment.newInstance();
+                case 1: //property info
+//                    fragment = PropertyInfoFragment.newInstance();
+                    fragment = PlaceholderFragment.newInstance("Property Info Fields come here");
+                case 2: //Images
+//                    fragment = ImagePickerFragment.newInstance();
+                    fragment = PlaceholderFragment.newInstance("Image Picker will be displayed here");
+            }
+            return fragment;
         }
 
         @Override
@@ -153,11 +178,11 @@ public class DataInputActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "Agent Info";
                 case 1:
-                    return "SECTION 2";
+                    return "Property Info";
                 case 2:
-                    return "SECTION 3";
+                    return "Select Photos";
             }
             return null;
         }

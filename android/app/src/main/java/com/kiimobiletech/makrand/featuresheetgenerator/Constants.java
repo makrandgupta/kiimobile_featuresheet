@@ -6,4 +6,5 @@ package com.kiimobiletech.makrand.featuresheetgenerator;
 public class Constants {
     public final static String EXTRA_PAYLOAD = "com.kiimobiletech.makrand.featuresheetgenerator.FILLED";
     public final static String GENERATED_FILE = "generated.html";
+    public final static String TEMP_TEMPLATE = "template.html";
 }

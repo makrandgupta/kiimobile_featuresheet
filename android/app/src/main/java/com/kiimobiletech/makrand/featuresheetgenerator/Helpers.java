@@ -6,6 +6,7 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,6 +17,8 @@ import java.io.InputStreamReader;
 public class Helpers {
     public final static String TAG = "HELPERS";
     Context context;
+
+
 
     public Helpers(Context context){
         this.context = context;
@@ -42,7 +45,9 @@ public class Helpers {
 
     public String readFileFromInternal(String fileName) {
         FileInputStream in = null;
-        String line = null;
+        String line;
+
+        Log.d("FILESDIR", this.context.getFilesDir().toString());
 
         //open file stream
         try {
@@ -67,5 +72,24 @@ public class Helpers {
         }
         Log.d(TAG, sb.toString());
         return sb.toString();
+    }
+
+    public void writeToInternal (String fileName, String data) {
+        //open file stream to output the file
+        FileOutputStream fOut = null;
+        try {
+            fOut = this.context.openFileOutput(fileName, Context.MODE_PRIVATE);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        //write file to the filestream
+        try {
+            assert fOut != null;
+            fOut.write(data.getBytes());
+            fOut.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

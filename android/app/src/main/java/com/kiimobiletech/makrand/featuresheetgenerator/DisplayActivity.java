@@ -2,27 +2,24 @@ package com.kiimobiletech.makrand.featuresheetgenerator;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 import android.webkit.WebView;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class DisplayActivity extends AppCompatActivity {
     public final static String TAG = "DISPLAY";
-    Helpers helpers = new Helpers(getApplicationContext());
+    Helpers helpers;
+    Generator generator = Generator.getInstance();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        helpers = new Helpers(getApplicationContext());
 //        setContentView(R.layout.activity_display);
+
+        generator.saveDocument();
+
 
         WebView webView = new WebView(this);
         setContentView(webView);
@@ -30,11 +27,11 @@ public class DisplayActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        String payload = intent.getStringExtra(MainActivity.EXTRA_PAYLOAD);
+        String payload = intent.getStringExtra(Constants.EXTRA_PAYLOAD);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.loadData(payload, "text/html", null);
 //        String fileURL = "file:///" + MainActivity.GENERATED_FILE;
-        String html = helpers.readFileFromInternal(MainActivity.GENERATED_FILE);
+        String html = helpers.readFileFromInternal(Constants.GENERATED_FILE);
         webView.loadData(html, "text/html", "UTF-8");
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

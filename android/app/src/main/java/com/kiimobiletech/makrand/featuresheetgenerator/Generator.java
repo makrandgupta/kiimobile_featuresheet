@@ -4,44 +4,71 @@ import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.parser.Tag;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
 
 /**
- * Created by mvolpe on 2016-07-12.
+ * Created by Makrand Gupta on 2016-07-12.
  */
-public class Generator {
-    String template;
-    DataContainer data;
-    Document doc;
 
+public class Generator {
+    String template  = null;
+    DataContainer data = DataContainer.getInstance();
+    Document doc;
+    Helpers helpers = null;
     public final static String TAG = "GENERATOR";
 
-    public Generator(String template, DataContainer data) {
-//        Log.d("Generator", "Constructor Invoked");
-//        Log.d("Generator Tem", template);
-//        Log.d("TemplateDone", "Done");
-        this.template = template;
-        this.data = data;
+    private static Generator instance = new Generator();
+
+    public static Generator getInstance() {
+        return instance;
     }
 
-    public void generateFeatureSheet() throws IOException {
+    //singleton constructor to prevent instantiation
+    public Generator() {}
+
+    public void inflateTemplate() throws IOException {
         Log.i(TAG, "Inflating Template");
-        doc = Jsoup.parse(template);
+        //fetch template from assets
+        this.template = helpers.loadFileFromAssets(Constants.TEMP_TEMPLATE);
 
-        doc.getElementById("agent_name").text(data.agentName);
-        doc.getElementById("agent_email").text(data.agentEmail);
-        doc.getElementById("agent_phone_number").text(data.agentPhone.toString());
-        doc.getElementById("price_value").text(data.listingPrice.toString());
-        doc.getElementById("address_value").text(data.listingAddress);
+        //parse using Jsoup
+        this.doc = Jsoup.parse(this.template);
 
-        Log.d(TAG, doc.getElementById("agent_name").toString());
+        //set the element place holders
+        // TODO: Update this block to automatically populate all existing fields in template
+        // Avoid hardcoding
+        this.doc.getElementById("agent_name").text(this.data.agentName);
+        this.doc.getElementById("agent_email").text(this.data.agentEmail);
+        this.doc.getElementById("agent_phone_number").text(this.data.agentPhone.toString());
+        this.doc.getElementById("price_value").text(this.data.listingPrice.toString());
+        this.doc.getElementById("address_value").text(this.data.listingAddress);
+    }
+
+    public void saveDocument() throws TemplateException{
+        if(this.template != null) {
+            //inflate template with data
+            try {
+                this.inflateTemplate();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //write to file
+            this.helpers.writeToInternal(Constants.GENERATED_FILE, this.doc.toString());
+        } else {
+            throw new TemplateException("No Template Selected");
+        }
+    }
+
+    /**
+     * Custom template exception class.
+     */
+    class TemplateException extends Exception
+    {
+        public TemplateException(String message)
+        {
+            super(message);
+        }
     }
 
 }

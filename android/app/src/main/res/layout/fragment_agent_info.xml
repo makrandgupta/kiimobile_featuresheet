@@ -1,0 +1,56 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.kiimobiletech.makrand.featuresheetgenerator.AgentInfoFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="Name"
+            android:hint="@string/name"
+            android:ems="12"
+            android:id="@+id/agentName"
+            android:layout_marginTop="100dp"
+            android:layout_centerHorizontal="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:text="test@wmia.com"
+            android:hint="@string/email"
+            android:ems="12"
+            android:id="@+id/agentEmail"
+            android:layout_below="@+id/agentName"
+            android:layout_centerHorizontal="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:text="321654"
+            android:hint="@string/phone_number"
+            android:ems="12"
+            android:id="@+id/agentPhone"
+            android:layout_below="@+id/agentEmail"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:id="@+id/button"
+            android:layout_below="@+id/agentPhone"
+            android:layout_alignEnd="@+id/agentPhone"
+            android:layout_marginTop="75dp" />
+    </RelativeLayout>
+
+</FrameLayout>

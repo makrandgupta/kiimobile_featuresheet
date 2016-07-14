@@ -11,36 +11,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.kiimobiletech.makrand.featuresheetgenerator.MainActivity"
     tools:showIn="@layout/activity_main">
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:ems="12"
-        android:id="@+id/agentName"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:text="test@wmia.com"
-        android:ems="12"
-        android:id="@+id/agentEmail"
-        android:layout_below="@+id/agentName"
-        android:layout_centerHorizontal="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:text="321654"
-        android:ems="12"
-        android:id="@+id/agentPhone"
-        android:layout_below="@+id/agentEmail"
-        android:layout_centerHorizontal="true" />
+    <!--TODO remove all android:text fields-->
 
     <EditText
         android:layout_width="wrap_content"
