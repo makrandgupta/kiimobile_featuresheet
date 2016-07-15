@@ -1,7 +1,12 @@
 package com.kiimobiletech.makrand.featuresheetgenerator;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
+//import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,8 +24,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class DataInputActivity extends AppCompatActivity {
+public class DataInputActivity extends AppCompatActivity implements AgentInfoFragment.OnNextListener, PropertyInfoFragment.OnNextListener{
 
     /**
      * The fragment argument representing the section number for this
@@ -41,6 +48,10 @@ public class DataInputActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private TabLayout tabLayout;
+
+    FloatingActionButton fab;
+    DataContainer dataContainer = DataContainer.getInstance();
 
 
     @Override
@@ -59,28 +70,98 @@ public class DataInputActivity extends AppCompatActivity {
         assert mViewPager != null;
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
         assert tabLayout != null;
         tabLayout.setupWithViewPager(mViewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if(fab != null)
-        fab.setOnClickListener(new View.OnClickListener() {
+//        fab = (FloatingActionButton) findViewById(R.id.fab);
+//        if(fab != null)
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Will generate document in future", Snackbar.LENGTH_LONG)
+//                        .setAction("Dismiss", new View.OnClickListener() {
+//                            //TODO: Check if this actually works. If not then go for alternate implementation.
+//                            //currently assuming that an empty click will automatically dismiss the snackbar
+//                            //alternate makes final object from the snackbar and then calls the dismiss() method on it
+//                            //http://stackoverflow.com/questions/30729312/how-to-dismiss-a-snackbar-using-its-own-action-button
+//                            @Override
+//                            public void onClick(View v) {}
+//                        })
+//                        .show();
+//            }
+//        });
+//        fab.hide();
+
+        findViewById(R.id.pink_icon).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Will generate document in future", Snackbar.LENGTH_LONG)
-                        .setAction("Dismiss", new View.OnClickListener() {
-                            //TODO: Check if this actually works. If not then go for alternate implementation.
-                            //currently assuming that an empty click will automatically dismiss the snackbar
-                            //alternate makes final object from the snackbar and then calls the dismiss() method on it
-                            //http://stackoverflow.com/questions/30729312/how-to-dismiss-a-snackbar-using-its-own-action-button
-                            @Override
-                            public void onClick(View v) {}
-                        })
-                        .show();
+            public void onClick(View v) {
+                Toast.makeText(DataInputActivity.this, "Clicked pink Floating Action Button", Toast.LENGTH_SHORT).show();
             }
         });
 
+        FloatingActionButton button = (FloatingActionButton) findViewById(R.id.setter);
+        button.setSize(FloatingActionButton.SIZE_MINI);
+        button.setColorNormalResId(R.color.pink);
+        button.setColorPressedResId(R.color.pink_pressed);
+        button.setIcon(R.drawable.ic_fab_star);
+        button.setStrokeVisible(false);
+
+        final View actionB = findViewById(R.id.action_b);
+
+        FloatingActionButton actionC = new FloatingActionButton(getBaseContext());
+        actionC.setTitle("Hide/Show Action above");
+        actionC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionB.setVisibility(actionB.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+            }
+        });
+
+        final FloatingActionsMenu menuMultipleActions = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
+        menuMultipleActions.addButton(actionC);
+
+        final FloatingActionButton removeAction = (FloatingActionButton) findViewById(R.id.button_remove);
+        removeAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((FloatingActionsMenu) findViewById(R.id.multiple_actions_down)).removeButton(removeAction);
+            }
+        });
+
+        ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
+        drawable.getPaint().setColor(getResources().getColor(R.color.white));
+        ((FloatingActionButton) findViewById(R.id.setter_drawable)).setIconDrawable(drawable);
+
+        final FloatingActionButton actionA = (FloatingActionButton) findViewById(R.id.action_a);
+        actionA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                actionA.setTitle("Action A clicked");
+            }
+        });
+
+        // Test that FAMs containing FABs with visibility GONE do not cause crashes
+        findViewById(R.id.button_gone).setVisibility(View.GONE);
+
+        final FloatingActionButton actionEnable = (FloatingActionButton) findViewById(R.id.action_enable);
+        actionEnable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                menuMultipleActions.setEnabled(!menuMultipleActions.isEnabled());
+            }
+        });
+
+        FloatingActionsMenu rightLabels = (FloatingActionsMenu) findViewById(R.id.right_labels);
+        FloatingActionButton addedOnce = new FloatingActionButton(this);
+        addedOnce.setTitle("Added once");
+        rightLabels.addButton(addedOnce);
+
+        FloatingActionButton addedTwice = new FloatingActionButton(this);
+        addedTwice.setTitle("Added twice");
+        rightLabels.addButton(addedTwice);
+        rightLabels.removeButton(addedTwice);
+        rightLabels.addButton(addedTwice);
     }
 
     @Override
@@ -104,6 +185,19 @@ public class DataInputActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onNext(Integer position) {
+        Log.d("CURRENT_TAB:", position.toString());
+        if(position < 3) {
+            tabLayout.getTabAt(position + 1).select();
+        }
+        if(dataContainer.completed()) {
+//            fab.show();
+        }
+    }
+
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -129,7 +223,7 @@ public class DataInputActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_data_input, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(new StringBuilder().append(R.string.section_format).append(getArguments().getString(ARG_PLACE_HOLDER_STRING)).toString());
+            textView.setText(getArguments().getString(ARG_PLACE_HOLDER_STRING));
             return rootView;
         }
     }
@@ -150,28 +244,27 @@ public class DataInputActivity extends AppCompatActivity {
             // Return a PlaceholderFragment (defined as a static inner class below).
 //            return PlaceholderFragment.newInstance(position + 1);
 
-//            PlaceholderFragment fragment = new PlaceholderFragment();
-//            Bundle args = new Bundle();
-//            fragment.setArguments(args);
+            Log.d("TAB_POSITION", Integer.toString(position));
 
-            Fragment fragment = null;
+//            Fragment fragment = null;
             switch (position) {
                 case 0: //agent info
-                    fragment = AgentInfoFragment.newInstance();
+                    return AgentInfoFragment.newInstance();
                 case 1: //property info
-//                    fragment = PropertyInfoFragment.newInstance();
-                    fragment = PlaceholderFragment.newInstance("Property Info Fields come here");
+                    return PropertyInfoFragment.newInstance();
+//                    return PlaceholderFragment.newInstance("Property Info Fields come here");
                 case 2: //Images
-//                    fragment = ImagePickerFragment.newInstance();
-                    fragment = PlaceholderFragment.newInstance("Image Picker will be displayed here");
+//                    return ImagePickerFragment.newInstance();
+                    return PlaceholderFragment.newInstance("Image Picker will be displayed here");
+                default:
+                    return PlaceholderFragment.newInstance("Bazinga!");
             }
-            return fragment;
         }
+
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            return Constants.NUM_TABS;
         }
 
         @Override

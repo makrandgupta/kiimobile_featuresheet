@@ -41,8 +41,8 @@ public class Generator {
         this.doc.getElementById("agent_name").text(this.data.agentName);
         this.doc.getElementById("agent_email").text(this.data.agentEmail);
         this.doc.getElementById("agent_phone_number").text(this.data.agentPhone.toString());
-        this.doc.getElementById("price_value").text(this.data.listingPrice.toString());
-        this.doc.getElementById("address_value").text(this.data.listingAddress);
+        this.doc.getElementById("price_value").text(this.data.propertyPrice.toString());
+        this.doc.getElementById("address_value").text(this.data.propertyAddress);
     }
 
     public void saveDocument() throws TemplateException{

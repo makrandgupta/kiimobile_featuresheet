@@ -2,8 +2,8 @@ package com.kiimobiletech.makrand.featuresheetgenerator;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,19 +12,18 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnNextListener} interface
+ * {@link PropertyInfoFragment.OnNextListener} interface
  * to handle interaction events.
- * Use the {@link AgentInfoFragment#newInstance} factory method to
+ * Use the {@link PropertyInfoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AgentInfoFragment extends Fragment {
-    private static final int FRAGMENT_POSITION = 0;
+public class PropertyInfoFragment extends Fragment {
+    private static final int FRAGMENT_POSITION = 1;
 
-    EditText agentNameEditText, agentEmailEditText, agentPhoneEditText;
+    EditText propertyAddressEditText, propertyPriceEditText;
     DataContainer dataContainer = DataContainer.getInstance();
     Button nextButton;
 
@@ -32,7 +31,7 @@ public class AgentInfoFragment extends Fragment {
     private OnNextListener mListener;
     View view;
 
-    public AgentInfoFragment() {
+    public PropertyInfoFragment() {
         // Required empty public constructor
     }
 
@@ -40,11 +39,11 @@ public class AgentInfoFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment AgentInfoFragment.
+     * @return A new instance of fragment PropetyInfoFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AgentInfoFragment newInstance() {
-        return new AgentInfoFragment();
+    public static PropertyInfoFragment newInstance() {
+        return new PropertyInfoFragment();
     }
 
 
@@ -57,7 +56,7 @@ public class AgentInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_agent_info, container, false);
+        view = inflater.inflate(R.layout.fragment_property_info, container, false);
         nextButton = (Button) view.findViewById(R.id.nextButton);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,29 +73,19 @@ public class AgentInfoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //TODO: create method to automatically get all fields
-        agentNameEditText = (EditText) getView().findViewById(R.id.input_agent_name);
-        agentEmailEditText = ((EditText) getView().findViewById(R.id.input_agent_email));
-        agentPhoneEditText = ((EditText) getView().findViewById(R.id.input_agent_phone));
+        propertyAddressEditText = (EditText) getView().findViewById(R.id.input_property_address);
+        propertyPriceEditText = ((EditText) getView().findViewById(R.id.input_property_price));
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed() {
         if (mListener != null) {
             //save data
-//            Log.d("DATA", "Name: "+agentNameEditText.getText());
-//            Log.d("DATA", "Email: "+agentEmailEditText.getText());
-//            Log.d("DATA", "Phone: "+Integer.parseInt(agentPhoneEditText.getText().toString()));
-
-            dataContainer.setAgentInfo(agentNameEditText.getText().toString(),
-                                        agentEmailEditText.getText().toString(),
-                                        Integer.parseInt(agentPhoneEditText.getText().toString()));
-//
-//            Log.d("DATA_CONTAINER", "Name: "+dataContainer.agentName);
-//            Log.d("DATA_CONTAINER", "Email: "+dataContainer.agentEmail);
-//            Log.d("DATA_CONTAINER", "Phone: "+dataContainer.agentPhone);
-
-//            dataContainer.setAgentInfo("Sample Name", "sample@email.com", 13245687);
-            Snackbar.make(view, "Agent Data Saved", Snackbar.LENGTH_SHORT)
+            dataContainer.setPropertyInfo(propertyAddressEditText.getText().toString(),
+                    Integer.parseInt(propertyPriceEditText.getText().toString()));
+            Log.d("DATA_CONTAINER", "property address: " + dataContainer.propertyAddress);
+            Log.d("DATA_CONTAINER", "property price: " + dataContainer.propertyPrice);
+            Snackbar.make(view, "Property Data Saved", Snackbar.LENGTH_SHORT)
                     .setAction("Dismiss", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {}
@@ -134,8 +123,6 @@ public class AgentInfoFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnNextListener {
-        // TODO: Update argument type and name
         void onNext(Integer position);
     }
-
 }

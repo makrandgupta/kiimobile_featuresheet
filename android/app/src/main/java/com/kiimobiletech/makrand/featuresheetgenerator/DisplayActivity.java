@@ -18,7 +18,11 @@ public class DisplayActivity extends AppCompatActivity {
         helpers = new Helpers(getApplicationContext());
 //        setContentView(R.layout.activity_display);
 
-        generator.saveDocument();
+        try {
+            generator.saveDocument();
+        } catch (Generator.TemplateException e) {
+            e.printStackTrace();
+        }
 
 
         WebView webView = new WebView(this);

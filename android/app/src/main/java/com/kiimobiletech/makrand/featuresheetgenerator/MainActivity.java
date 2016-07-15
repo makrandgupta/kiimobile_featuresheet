@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private GoogleApiClient client;
 
+    DataContainer dataContainer = DataContainer.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +105,12 @@ public class MainActivity extends AppCompatActivity {
                 Uri.parse("android-app://com.kiimobiletech.makrand.featuresheetgenerator/http/host/path")
         );
         AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        dataContainer.empty();
     }
 
     @Override

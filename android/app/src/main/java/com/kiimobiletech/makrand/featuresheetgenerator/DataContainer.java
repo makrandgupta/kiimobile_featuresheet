@@ -5,11 +5,12 @@ package com.kiimobiletech.makrand.featuresheetgenerator;
  */
 public class DataContainer {
     public String agentName;
-
     public String agentEmail;
     public Integer agentPhone;
-    public Integer listingPrice;
-    public String listingAddress;
+
+    public Integer propertyPrice;
+    public String propertyAddress;
+
     private static DataContainer instance = new DataContainer();
 
 
@@ -26,14 +27,36 @@ public class DataContainer {
         this.agentPhone = agentPhone;
     }
 
-    public void setListgingInfo (String listingAddress, Integer listingPrice) {
-         this.listingAddress = listingAddress;
-        this.listingPrice = listingPrice;
+    public void setPropertyInfo(String listingAddress, Integer listingPrice) {
+         this.propertyAddress = listingAddress;
+        this.propertyPrice = listingPrice;
+    }
+
+    public boolean completed() {
+        if(agentName != null
+                && agentEmail != null
+                && agentPhone != null
+                && propertyPrice != null
+                && propertyAddress != null)
+            return true;
+        return false;
+    }
+
+    public void empty() {
+        agentName = null;
+        agentEmail = null;
+        agentPhone = null;
+        propertyPrice = null;
+        propertyAddress = null;
     }
 
     @Override
     public String toString(){
-        return "agentName: " + agentName + "; agentEmail: " + agentEmail + "; agentPhone: " + agentPhone + "; listingPrice: " + listingPrice + "; listingAddress: " + listingAddress;
+        return "agentName: " + agentName
+                + "; agentEmail: " + agentEmail
+                + "; agentPhone: " + agentPhone
+                + "; propertyPrice: " + propertyPrice
+                + "; propertyAddress: " + propertyAddress;
     }
 
 }
