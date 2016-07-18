@@ -11,31 +11,14 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.kiimobiletech.makrand.featuresheetgenerator.MainActivity"
     tools:showIn="@layout/activity_main">
-    <!--TODO remove all android:text fields-->
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listingPrice"
-        android:ems="12"
-        android:text="132456987"
-        android:layout_below="@+id/agentPhone"
-        android:layout_centerHorizontal="true" />
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listingAddress"
-        android:ems="12"
-        android:text="Listing Address"
-        android:layout_below="@+id/listingPrice"
-        android:layout_centerHorizontal="true" />
+    <!--TODO remove/refactor all android:text fields-->
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Next"
+        android:text="Start"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         android:id="@+id/button"
-        android:layout_below="@+id/listingAddress"
-        android:layout_alignEnd="@+id/listingAddress"
         android:layout_marginTop="75dp" />
 </RelativeLayout>
