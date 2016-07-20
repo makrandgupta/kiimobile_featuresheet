@@ -1,16 +1,16 @@
-package com.kiimobiletech.makrand.featuresheetgenerator;
+package com.kiimobiletech.makrand.featuresheetgenerator.dataInput;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.kiimobiletech.makrand.featuresheetgenerator.R;
 
 
 /**
@@ -42,7 +42,6 @@ public class AgentInfoFragment extends Fragment {
      *
      * @return A new instance of fragment AgentInfoFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static AgentInfoFragment newInstance() {
         return new AgentInfoFragment();
     }
@@ -79,23 +78,12 @@ public class AgentInfoFragment extends Fragment {
         agentPhoneEditText = ((EditText) getView().findViewById(R.id.input_agent_phone));
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed() {
         if (mListener != null) {
             //save data
-//            Log.d("DATA", "Name: "+agentNameEditText.getText());
-//            Log.d("DATA", "Email: "+agentEmailEditText.getText());
-//            Log.d("DATA", "Phone: "+Integer.parseInt(agentPhoneEditText.getText().toString()));
-
             dataContainer.setAgentInfo(agentNameEditText.getText().toString(),
                                         agentEmailEditText.getText().toString(),
                                         Integer.parseInt(agentPhoneEditText.getText().toString()));
-//
-//            Log.d("DATA_CONTAINER", "Name: "+dataContainer.agentName);
-//            Log.d("DATA_CONTAINER", "Email: "+dataContainer.agentEmail);
-//            Log.d("DATA_CONTAINER", "Phone: "+dataContainer.agentPhone);
-
-//            dataContainer.setAgentInfo("Sample Name", "sample@email.com", 13245687);
             Snackbar.make(view, "Agent Data Saved", Snackbar.LENGTH_SHORT)
                     .setAction("Dismiss", new View.OnClickListener() {
                         @Override
@@ -134,7 +122,6 @@ public class AgentInfoFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnNextListener {
-        // TODO: Update argument type and name
         void onNext(Integer position);
     }
 

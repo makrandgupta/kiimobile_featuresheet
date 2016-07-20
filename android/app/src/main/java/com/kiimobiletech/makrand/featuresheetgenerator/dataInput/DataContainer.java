@@ -1,4 +1,6 @@
-package com.kiimobiletech.makrand.featuresheetgenerator;
+package com.kiimobiletech.makrand.featuresheetgenerator.dataInput;
+
+import android.graphics.Bitmap;
 
 /**
  * Created by Makrand Gupta on 2016-07-12.
@@ -10,6 +12,8 @@ public class DataContainer {
 
     public Integer propertyPrice;
     public String propertyAddress;
+
+    public Bitmap tempImage;
 
     private static DataContainer instance = new DataContainer();
 

@@ -1,4 +1,4 @@
-package com.kiimobiletech.makrand.featuresheetgenerator;
+package com.kiimobiletech.makrand.featuresheetgenerator.dataInput;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.kiimobiletech.makrand.featuresheetgenerator.R;
 
 
 /**
@@ -41,7 +43,6 @@ public class PropertyInfoFragment extends Fragment {
      *
      * @return A new instance of fragment PropetyInfoFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static PropertyInfoFragment newInstance() {
         return new PropertyInfoFragment();
     }
@@ -77,7 +78,6 @@ public class PropertyInfoFragment extends Fragment {
         propertyPriceEditText = ((EditText) getView().findViewById(R.id.input_property_price));
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed() {
         if (mListener != null) {
             //save data
