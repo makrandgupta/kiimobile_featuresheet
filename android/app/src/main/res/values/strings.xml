@@ -15,4 +15,8 @@
     <string name="propertyPrice">Price</string>
     <string name="next">Next</string>
     <string name="price">Price</string>
+    <string name="pick_image_from_gallery">Pick image from Gallery</string>
+    <string name="capture_image">Capture image</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
 </resources>
