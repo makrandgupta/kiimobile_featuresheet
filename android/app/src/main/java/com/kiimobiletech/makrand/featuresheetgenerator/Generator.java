@@ -2,6 +2,8 @@ package com.kiimobiletech.makrand.featuresheetgenerator;
 
 import android.util.Log;
 
+import com.kiimobiletech.makrand.featuresheetgenerator.dataInput.DataContainer;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -63,7 +65,7 @@ public class Generator {
     /**
      * Custom template exception class.
      */
-    class TemplateException extends Exception
+    public class TemplateException extends Exception
     {
         public TemplateException(String message)
         {
