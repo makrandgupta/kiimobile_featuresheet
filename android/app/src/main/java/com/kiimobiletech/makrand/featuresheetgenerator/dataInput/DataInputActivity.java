@@ -1,8 +1,13 @@
-package com.kiimobiletech.makrand.featuresheetgenerator;
+package com.kiimobiletech.makrand.featuresheetgenerator.dataInput;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -20,31 +25,24 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
-import java.io.IOException;
+import com.kiimobiletech.makrand.featuresheetgenerator.Constants;
+import com.kiimobiletech.makrand.featuresheetgenerator.Generator;
+import com.kiimobiletech.makrand.featuresheetgenerator.R;
 
-public class DataInputActivity extends AppCompatActivity implements AgentInfoFragment.OnNextListener, PropertyInfoFragment.OnNextListener{
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
+public class DataInputActivity extends AppCompatActivity implements AgentInfoFragment.OnNextListener, PropertyInfoFragment.OnNextListener, ImagePickerFragment.OnImagePickListener{
 
     /**
      * The fragment argument representing the section number for this
      * fragment.
      */
     private static final String ARG_PLACE_HOLDER_STRING = "place_holder_string";
+    private static final String TAG = "DATAINPUT";
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager mViewPager;
     private TabLayout tabLayout;
+    Bitmap imageBitmap;
 
     FloatingActionButton fab;
     DataContainer dataContainer = DataContainer.getInstance();
@@ -60,10 +58,10 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
         assert mViewPager != null;
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -82,8 +80,6 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
                     e.printStackTrace();
                 }
 
-
-
                 Snackbar.make(view, "Will generate document in future", Snackbar.LENGTH_LONG)
                         .setAction("Dismiss", new View.OnClickListener() {
                             //TODO: Check if this actually works. If not then go for alternate implementation.
@@ -96,7 +92,9 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
                         .show();
             }
         });
-        fab.hide();
+        if (fab != null) {
+            fab.hide();
+        }
     }
 
     @Override
@@ -122,13 +120,60 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d(TAG, "Triggered");
+        Log.d("requestCode", String.valueOf(requestCode));
+
+        switch(requestCode) {
+            case Constants.SELECT_PHOTO:
+                if(resultCode == RESULT_OK){
+                    Log.d(TAG, "Gallery image selected");
+                    Uri selectedImage = data.getData();
+                    InputStream imageStream = null;
+                    try {
+                        imageStream = getContentResolver().openInputStream(selectedImage);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                    //TODO: save imgBitmap into dataContainer
+                    dataContainer.tempImage = BitmapFactory.decodeStream(imageStream);
+//                    ImageView img = (ImageView) findViewById(R.id.imageView);
+//                    if (img != null) {
+//                        img.setImageBitmap(imgBitmap);
+//                    }
+                }
+                break;
+            case Constants.REQUEST_IMAGE_CAPTURE:
+                if(resultCode == RESULT_OK) {
+                    Log.d(TAG, "Camera Image selected");
+                    Bundle extras = data.getExtras();
+
+                    //TODO: save imgBitmap into dataContainer
+                    dataContainer.tempImage = (Bitmap) extras.get("data");
+//                    mImageView.setImageBitmap(imageBitmap);
+                }
+                break;
+        }
+    }
+
+    @Override
     public void onNext(Integer position) {
         Log.d("CURRENT_TAB:", position.toString());
         if(position < 3) {
+            //noinspection ConstantConditions
             tabLayout.getTabAt(position + 1).select();
         }
         if(dataContainer.completed())
             fab.show();
+    }
+
+    @Override
+    public void onImagePick() {
+
+
     }
 
 
@@ -188,8 +233,13 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
                     return PropertyInfoFragment.newInstance();
 //                    return PlaceholderFragment.newInstance("Property Info Fields come here");
                 case 2: //Images
-//                    return ImagePickerFragment.newInstance();
-                    return PlaceholderFragment.newInstance("Image Picker will be displayed here");
+                    ImagePickerFragment imgFrag;
+                    if(imageBitmap != null)
+                        imgFrag = ImagePickerFragment.newInstance(imageBitmap);
+                    else
+                        imgFrag = ImagePickerFragment.newInstance();
+                    return imgFrag;
+//                    return PlaceholderFragment.newInstance("Image Picker will be displayed here");
                 default:
                     return PlaceholderFragment.newInstance("Bazinga!");
             }
