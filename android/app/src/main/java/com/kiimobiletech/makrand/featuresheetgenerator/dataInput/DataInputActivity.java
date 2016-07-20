@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kiimobiletech.makrand.featuresheetgenerator.Constants;
+import com.kiimobiletech.makrand.featuresheetgenerator.DisplayActivity;
 import com.kiimobiletech.makrand.featuresheetgenerator.Generator;
 import com.kiimobiletech.makrand.featuresheetgenerator.R;
 
@@ -46,7 +47,6 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
 
     FloatingActionButton fab;
     DataContainer dataContainer = DataContainer.getInstance();
-    Generator generator = Generator.getInstance();
 
 
     @Override
@@ -74,11 +74,8 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    generator.saveDocument();
-                } catch (Generator.TemplateException e) {
-                    e.printStackTrace();
-                }
+                Intent intent = new Intent(view.getContext(), DisplayActivity.class);
+                startActivity(intent);
 
                 Snackbar.make(view, "Will generate document in future", Snackbar.LENGTH_LONG)
                         .setAction("Dismiss", new View.OnClickListener() {
