@@ -1,6 +1,7 @@
 package com.kiimobiletech.makrand.featuresheetgenerator.dataInput;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 /**
  * Created by Makrand Gupta on 2016-07-12.
@@ -14,6 +15,8 @@ public class DataContainer {
     public String propertyAddress;
 
     public Bitmap tempImage;
+
+    private static final String TAG = "DataContainer";
 
     private static DataContainer instance = new DataContainer();
 
@@ -29,6 +32,8 @@ public class DataContainer {
         this.agentName = agentName;
         this.agentEmail = agentEmail;
         this.agentPhone = agentPhone;
+
+        Log.d(TAG, instance.toString());
     }
 
     public void setPropertyInfo(String listingAddress, Integer listingPrice) {
@@ -52,6 +57,7 @@ public class DataContainer {
         agentPhone = null;
         propertyPrice = null;
         propertyAddress = null;
+        tempImage = null;
     }
 
     @Override
