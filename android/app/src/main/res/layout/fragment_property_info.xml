@@ -1,29 +1,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
-    <!--xmlns:tools="http://schemas.android.com/tools"-->
-    <!--tools:context="com.kiimobiletech.makrand.featuresheetgenerator.PropertyInfoFragment">-->
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.kiimobiletech.makrand.featuresheetgenerator.PropertyInfoFragment">
-
-        <!--<android.support.design.widget.AppBarLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">-->
-
-            <!--<android.support.v7.widget.Toolbar-->
-                <!--android:id="@+id/toolbar"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="?attr/actionBarSize"-->
-                <!--android:background="?attr/colorPrimary"-->
-                <!--app:layout_scrollFlags="scroll|enterAlways"-->
-                <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />-->
-        <!--</android.support.design.widget.AppBarLayout>-->
+        tools:context=".dataInput.PropertyInfoFragment">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -73,42 +56,6 @@
         </LinearLayout>
 
     </android.support.design.widget.CoordinatorLayout>
-
-    <!--<RelativeLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
-
-        <!--<EditText-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:inputType="textPostalAddress"-->
-            <!--android:text="123 Main St"-->
-            <!--android:hint="@string/address"-->
-            <!--android:ems="12"-->
-            <!--android:id="@+id/propertyAddress"-->
-            <!--android:layout_marginTop="100dp"-->
-            <!--android:layout_centerHorizontal="true" />-->
-
-        <!--<EditText-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:inputType="number"-->
-            <!--android:text="123456"-->
-            <!--android:hint="@string/propertyPrice"-->
-            <!--android:ems="12"-->
-            <!--android:id="@+id/propertyPrice"-->
-            <!--android:layout_below="@+id/propertyAddress"-->
-            <!--android:layout_centerHorizontal="true" />-->
-
-        <!--<Button-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Next"-->
-            <!--android:id="@+id/nextButton"-->
-            <!--android:layout_below="@+id/propertyPrice"-->
-            <!--android:layout_alignEnd="@+id/propertyPrice"-->
-            <!--android:layout_marginTop="75dp" />-->
-    <!--</RelativeLayout>-->
 
 
 </FrameLayout>

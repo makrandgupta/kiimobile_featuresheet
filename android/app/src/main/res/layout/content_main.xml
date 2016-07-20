@@ -21,4 +21,20 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/button"
         android:layout_marginTop="75dp" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button"
+        android:id="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_add_to_photos"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Image"
+        android:layout_below="@+id/button"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/image_button"
+        android:layout_marginTop="75dp" />
 </RelativeLayout>
