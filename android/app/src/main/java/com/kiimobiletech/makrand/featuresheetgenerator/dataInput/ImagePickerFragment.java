@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,8 +32,8 @@ public class ImagePickerFragment extends Fragment {
     private static Bitmap tempImagePreview;
     private OnImagePickListener mListener;
     private Integer num_images;
-    ImageButton galleryImageButton;
-    ImageButton cameraImageButton;
+    Button galleryButton;
+    Button cameraButton;
 
     DataContainer dataContainer = DataContainer.getInstance();
 
@@ -77,8 +78,8 @@ public class ImagePickerFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_image_picker, container, false);
-        galleryImageButton = (ImageButton) view.findViewById(R.id.gallery_image_button);
-        galleryImageButton.setOnClickListener(new View.OnClickListener() {
+        galleryButton = (Button) view.findViewById(R.id.gallery_button);
+        galleryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //launch gallery
@@ -86,8 +87,8 @@ public class ImagePickerFragment extends Fragment {
             }
         });
 
-        cameraImageButton = (ImageButton) view.findViewById(R.id.camera_image_button);
-        cameraImageButton.setOnClickListener(new View.OnClickListener() {
+        cameraButton = (Button) view.findViewById(R.id.camera_button);
+        cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //launch camera
@@ -97,12 +98,8 @@ public class ImagePickerFragment extends Fragment {
         // TODO: Load selected images from dataContainer and display them
         if(dataContainer.tempImage != null) {
             Log.d("IMGLOADER", "tempImage found");
-            ImageView imageView = new ImageView(getContext());
+            ImageView imageView = (ImageView) view.findViewById(R.id.tempImage);
             imageView.setImageBitmap(dataContainer.tempImage);
-            imageView.setPadding(5, 5, 5, 5);
-
-            LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.image_picker_linear);
-            linearLayout.addView(imageView);
         }
         return view;
     }
@@ -155,7 +152,6 @@ public class ImagePickerFragment extends Fragment {
             Log.d("IMGLOADER", "tempImage found");
             ImageView imageView = (ImageView) getView().findViewById(R.id.tempImage);
             imageView.setImageBitmap(dataContainer.tempImage);
-            imageView.setPadding(5, 5, 5, 5);
 
         }
     }
