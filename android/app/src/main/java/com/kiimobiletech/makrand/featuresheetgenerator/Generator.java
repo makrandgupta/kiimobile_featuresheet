@@ -1,5 +1,6 @@
 package com.kiimobiletech.makrand.featuresheetgenerator;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.kiimobiletech.makrand.featuresheetgenerator.dataInput.DataContainer;
@@ -17,12 +18,13 @@ public class Generator {
     String template  = null;
     DataContainer data = DataContainer.getInstance();
     Document doc;
-    Helpers helpers = null;
+    static Helpers helpers = null;
     public final static String TAG = "GENERATOR";
 
     private static Generator instance = new Generator();
 
-    public static Generator getInstance() {
+    public static Generator getInstance(Context context) {
+        helpers = new Helpers(context);
         return instance;
     }
 
@@ -40,6 +42,8 @@ public class Generator {
         //set the element place holders
         // TODO: Update this block to automatically populate all existing fields in template
         // Avoid hardcoding
+
+        Log.d(TAG, this.data.agentEmail);
         this.doc.getElementById("agent_name").text(this.data.agentName);
         this.doc.getElementById("agent_email").text(this.data.agentEmail);
         this.doc.getElementById("agent_phone_number").text(this.data.agentPhone.toString());
@@ -48,6 +52,7 @@ public class Generator {
     }
 
     public void saveDocument() throws TemplateException{
+        this.template = helpers.loadFileFromAssets(Constants.TEMP_TEMPLATE);
         if(this.template != null) {
             //inflate template with data
             try {
@@ -56,7 +61,7 @@ public class Generator {
                 e.printStackTrace();
             }
             //write to file
-            this.helpers.writeToInternal(Constants.GENERATED_FILE, this.doc.toString());
+            helpers.writeToInternal(Constants.GENERATED_FILE, this.doc.toString());
         } else {
             throw new TemplateException("No Template Selected");
         }

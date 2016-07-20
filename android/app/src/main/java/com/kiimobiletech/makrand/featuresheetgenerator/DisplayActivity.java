@@ -9,7 +9,7 @@ import android.webkit.WebView;
 public class DisplayActivity extends AppCompatActivity {
     public final static String TAG = "DISPLAY";
     Helpers helpers;
-    Generator generator = Generator.getInstance();
+    Generator generator = Generator.getInstance(this);
 
 
     @Override
