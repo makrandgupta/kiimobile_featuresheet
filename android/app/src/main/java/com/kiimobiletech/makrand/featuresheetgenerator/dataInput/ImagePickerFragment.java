@@ -11,9 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.kiimobiletech.makrand.featuresheetgenerator.Constants;
 import com.kiimobiletech.makrand.featuresheetgenerator.R;
@@ -37,11 +35,7 @@ public class ImagePickerFragment extends Fragment {
 
     DataContainer dataContainer = DataContainer.getInstance();
 
-    public ImagePickerFragment() {
-        // Required empty public constructor
-
-    }
-
+    public ImagePickerFragment() {}
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
