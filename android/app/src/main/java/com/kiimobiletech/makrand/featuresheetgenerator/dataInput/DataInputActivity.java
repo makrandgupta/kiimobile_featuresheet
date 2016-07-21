@@ -57,6 +57,7 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_input);
 
+        setTitle(dataContainer.getTemplate());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -80,16 +81,7 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
                 Intent intent = new Intent(view.getContext(), DisplayActivity.class);
                 startActivity(intent);
 
-                Snackbar.make(view, "Will generate document in future", Snackbar.LENGTH_LONG)
-                        .setAction("Dismiss", new View.OnClickListener() {
-                            //TODO: Check if this actually works. If not then go for alternate implementation.
-                            //currently assuming that an empty click will automatically dismiss the snackbar
-                            //alternate makes final object from the snackbar and then calls the dismiss() method on it
-                            //http://stackoverflow.com/questions/30729312/how-to-dismiss-a-snackbar-using-its-own-action-button
-                            @Override
-                            public void onClick(View v) {}
-                        })
-                        .show();
+                Snackbar.make(view, "Will generate document in future", Snackbar.LENGTH_LONG).show();
             }
         });
         if (fab != null) {

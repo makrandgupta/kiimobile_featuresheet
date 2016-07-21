@@ -1,17 +1,16 @@
 package com.kiimobiletech.makrand.featuresheetgenerator;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -19,12 +18,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.kiimobiletech.makrand.featuresheetgenerator.dataInput.DataContainer;
 import com.kiimobiletech.makrand.featuresheetgenerator.dataInput.DataInputActivity;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
-    Button startBtn;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -33,60 +29,57 @@ public class MainActivity extends AppCompatActivity {
     private GoogleApiClient client;
 
     DataContainer dataContainer = DataContainer.getInstance();
+    String[] templateList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
-//        nextButtonListener();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        /*
+        * load templates from assets
+        * */
+        try {
+            templateList  = getAssets().list("templates");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        if(fab != null)
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                viewGeneratedDocument(view);
-//            }
-//        });
+        if (templateList != null) {
+            Log.d("TEMPLATES", "found");
+            for (String template: templateList) {
+                //Do your stuff here
+                Log.d("TEMPLATES", template);
+            }
+        }
 
-        startBtn = (Button) findViewById(R.id.button);
-        startBtn.setOnClickListener(new View.OnClickListener(){
+        // Get the reference of ListViewAnimals
+        ListView templateListView=(ListView)findViewById(R.id.template_picker_list_view);
 
-            @Override
-            public void onClick(View view) {
-                letsGetStarted(view);
+        // Create The Adapter with passing ArrayList as 3rd parameter
+        ArrayAdapter arrayAdapter =
+                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, templateList);
+        // Set The Adapter
+        templateListView.setAdapter(arrayAdapter);
+
+        // register onClickListener to handle click events on each item
+        templateListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            // argument position gives the index of item which is clicked
+            public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3)
+            {
+                String selectedTemplate = templateList[position];
+                dataContainer.setTemplate(selectedTemplate);
+                Intent intent = new Intent(MainActivity.this, DataInputActivity.class);
+                Snackbar.make(v, selectedTemplate + "selected", Snackbar.LENGTH_SHORT).show();
+                startActivity(intent);
             }
         });
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -133,10 +126,5 @@ public class MainActivity extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
-    }
-
-    public void letsGetStarted(View view){
-        Intent intent = new Intent(view.getContext(), DataInputActivity.class);
-        startActivity(intent);
     }
 }

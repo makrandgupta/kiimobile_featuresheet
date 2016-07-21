@@ -84,12 +84,7 @@ public class AgentInfoFragment extends Fragment {
             dataContainer.setAgentInfo(agentNameEditText.getText().toString(),
                                         agentEmailEditText.getText().toString(),
                                         Integer.parseInt(agentPhoneEditText.getText().toString()));
-            Snackbar.make(view, "Agent Data Saved", Snackbar.LENGTH_SHORT)
-                    .setAction("Dismiss", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {}
-                    })
-                    .show();
+            Snackbar.make(view, "Agent Data Saved", Snackbar.LENGTH_SHORT).show();
             mListener.onNext(FRAGMENT_POSITION);
         }
     }
