@@ -27,22 +27,13 @@ import android.widget.TextView;
 
 import com.kiimobiletech.makrand.featuresheetgenerator.Constants;
 import com.kiimobiletech.makrand.featuresheetgenerator.DisplayActivity;
-import com.kiimobiletech.makrand.featuresheetgenerator.Generator;
 import com.kiimobiletech.makrand.featuresheetgenerator.R;
 
-import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 
 public class DataInputActivity extends AppCompatActivity implements AgentInfoFragment.OnNextListener, PropertyInfoFragment.OnNextListener, ImagePickerFragment.OnImagePickListener{
 
-    /**
-     * The fragment argument representing the section number for this
-     * fragment.
-     */
-    private static final String ARG_PLACE_HOLDER_STRING = "place_holder_string";
     private static final String TAG = "DATAINPUT";
 
     private TabLayout tabLayout;
@@ -54,25 +45,30 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        /*
+        * Activity base setup
+        * */
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_input);
-
         setTitle(dataContainer.getTemplate());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
+        /*
+        * Fragment loader
+        * */
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
         assert mViewPager != null;
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         assert tabLayout != null;
         tabLayout.setupWithViewPager(mViewPager);
 
+        /*
+        * Floating action button setup
+        * */
         fab = (FloatingActionButton) findViewById(R.id.fab);
         if(fab != null)
         fab.setOnClickListener(new View.OnClickListener() {
@@ -115,9 +111,12 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.d(TAG, "Triggered");
-        Log.d("requestCode", String.valueOf(requestCode));
+//        Log.d(TAG, "Triggered");
+//        Log.d("requestCode", String.valueOf(requestCode));
 
+        /*
+        * Based on the source, handle the image
+        * */
         switch(requestCode) {
             case Constants.SELECT_PHOTO:
                 if(resultCode == RESULT_OK){
@@ -130,29 +129,21 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                    BufferedInputStream buf = new BufferedInputStream(imageStream);
-                    try {
-                        byte[] tempImageByteArray= new byte[buf.available()];
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
 
-                    //TODO: save imgBitmap into dataContainer
                     dataContainer.tempImage = BitmapFactory.decodeStream(imageStream);
-//                    ImageView img = (ImageView) findViewById(R.id.imageView);
-//                    if (img != null) {
-//                        img.setImageBitmap(imgBitmap);
-//                    }
                 }
                 break;
             case Constants.REQUEST_IMAGE_CAPTURE:
                 if(resultCode == RESULT_OK) {
                     Log.d(TAG, "Camera Image selected");
-                    Bundle extras = data.getExtras();
+                    /*
+                    * Save low-res bitmap to dataContainer
+                    * */
+                    dataContainer.tempImage = (Bitmap) data.getExtras().get("data");
 
-                    //TODO: save imgBitmap into dataContainer
-                    dataContainer.tempImage = (Bitmap) extras.get("data");
-//                    mImageView.setImageBitmap(imageBitmap);
+                    /*
+                    * TODO: Save full-res image to external storage
+                    * */
                 }
                 break;
         }
@@ -175,37 +166,6 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
 
     }
 
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(String placeHolderString) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putString(ARG_PLACE_HOLDER_STRING, placeHolderString);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_data_input, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getArguments().getString(ARG_PLACE_HOLDER_STRING));
-            return rootView;
-        }
-    }
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -218,19 +178,14 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-//            return PlaceholderFragment.newInstance(position + 1);
 
             Log.d("TAB_POSITION", Integer.toString(position));
 
-//            Fragment fragment = null;
             switch (position) {
                 case 0: //agent info
                     return AgentInfoFragment.newInstance();
                 case 1: //property info
                     return PropertyInfoFragment.newInstance();
-//                    return PlaceholderFragment.newInstance("Property Info Fields come here");
                 case 2: //Images
                     ImagePickerFragment imgFrag;
                     if(imageBitmap != null)
@@ -238,7 +193,6 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
                     else
                         imgFrag = ImagePickerFragment.newInstance();
                     return imgFrag;
-//                    return PlaceholderFragment.newInstance("Image Picker will be displayed here");
                 default:
                     return PlaceholderFragment.newInstance("Bazinga!");
             }

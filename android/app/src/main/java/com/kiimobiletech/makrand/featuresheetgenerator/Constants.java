@@ -13,4 +13,5 @@ public class Constants {
     public static final String ARG_NUM_IMAGES = "num_images";
     public static final String SOURCE_GALLERY = "gallery";
     public static final String SOURCE_CAMERA = "camera";
+    public static final String ARG_PLACE_HOLDER_STRING = "place_holder_string";
 }
