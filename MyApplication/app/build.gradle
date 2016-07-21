@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.kiimobiletech.makrand.featuresheetgenerator"
+        applicationId "com.kiimobiletech.makrand.myapplication"
         minSdkVersion 23
         targetSdkVersion 23
         versionCode 1
@@ -23,9 +23,4 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
-    compile 'org.jsoup:jsoup:1.9.2'
-    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
-    compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.google.android.gms:play-services:9.0.0'
 }
