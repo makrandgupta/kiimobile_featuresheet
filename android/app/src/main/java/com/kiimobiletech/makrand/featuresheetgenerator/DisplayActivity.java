@@ -2,13 +2,17 @@ package com.kiimobiletech.makrand.featuresheetgenerator;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.webkit.WebView;
 
+import com.kiimobiletech.makrand.featuresheetgenerator.dataInput.DataContainer;
+
 public class DisplayActivity extends AppCompatActivity {
     public final static String TAG = "DISPLAY";
     Helpers helpers;
+    DataContainer dataContainer = DataContainer.getInstance();
     Generator generator = Generator.getInstance(this);
 
 
@@ -33,10 +37,11 @@ public class DisplayActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String payload = intent.getStringExtra(Constants.EXTRA_PAYLOAD);
         webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setDomStorageEnabled(true);
         webView.loadData(payload, "text/html", null);
-//        String fileURL = "file:///" + MainActivity.GENERATED_FILE;
         String html = helpers.readFileFromInternal(Constants.GENERATED_FILE);
-        webView.loadData(html, "text/html", "UTF-8");
+        webView.loadDataWithBaseURL("file://", html, "text/html", "UTF-8", "");
+//        webView.loadData(html, "text/html", "UTF-8");
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {

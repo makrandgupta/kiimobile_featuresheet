@@ -16,6 +16,8 @@ import android.widget.EditText;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.kiimobiletech.makrand.featuresheetgenerator.dataInput.DataContainer;
+import com.kiimobiletech.makrand.featuresheetgenerator.dataInput.DataInputActivity;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

@@ -1,6 +1,7 @@
 package com.kiimobiletech.makrand.featuresheetgenerator.dataInput;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Log;
 
 /**
@@ -19,6 +20,7 @@ public class DataContainer {
     private static final String TAG = "DataContainer";
 
     private static DataContainer instance = new DataContainer();
+    public Uri tempImageURI;
 
 
     //singleton

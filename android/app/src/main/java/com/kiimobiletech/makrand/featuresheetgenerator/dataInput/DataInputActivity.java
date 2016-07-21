@@ -30,7 +30,10 @@ import com.kiimobiletech.makrand.featuresheetgenerator.DisplayActivity;
 import com.kiimobiletech.makrand.featuresheetgenerator.Generator;
 import com.kiimobiletech.makrand.featuresheetgenerator.R;
 
+import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 
 public class DataInputActivity extends AppCompatActivity implements AgentInfoFragment.OnNextListener, PropertyInfoFragment.OnNextListener, ImagePickerFragment.OnImagePickListener{
@@ -128,10 +131,17 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
                 if(resultCode == RESULT_OK){
                     Log.d(TAG, "Gallery image selected");
                     Uri selectedImage = data.getData();
+                    dataContainer.tempImageURI = selectedImage;
                     InputStream imageStream = null;
                     try {
                         imageStream = getContentResolver().openInputStream(selectedImage);
                     } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    BufferedInputStream buf = new BufferedInputStream(imageStream);
+                    try {
+                        byte[] tempImageByteArray= new byte[buf.available()];
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
 
