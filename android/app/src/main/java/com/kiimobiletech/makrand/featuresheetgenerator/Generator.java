@@ -1,9 +1,7 @@
 package com.kiimobiletech.makrand.featuresheetgenerator;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 
@@ -16,6 +14,7 @@ import org.jsoup.select.Elements;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Created by Makrand Gupta on 2016-07-12
@@ -28,20 +27,24 @@ public class Generator {
     static Context context = null;
     public final static String TAG = "GENERATOR";
 
-    public Elements propertyTextElements;
-    public Elements propertyImageElements;
-    public Elements agentImageElements;
-    public Elements agentTextElements;
+    public Elements propertyTextElements = new Elements();
+    public Elements propertyImageElements = new Elements();
+    public Elements agentImageElements = new Elements();
+    public Elements agentTextElements = new Elements();
 
     private static Generator instance = new Generator();
 
     public static Generator getInstance(Context ctxt) throws TemplateException {
-        if(dataContainer.template == null){
+        if(dataContainer.templateName == null){
             throw new TemplateException("Template not selected");
         }
-        doc = Jsoup.parse(dataContainer.template);
         context = ctxt;
         helpers = new Helpers(ctxt);
+
+        String template = helpers.loadFileFromAssets("templates/" + dataContainer.templateName);
+        doc = Jsoup.parse(template);
+        Log.d(TAG, "raw template: " + template);
+
         return instance;
     }
 
@@ -50,22 +53,22 @@ public class Generator {
 
     public void inflateTemplate() throws IOException, TemplateException {
         Log.i(TAG, "Inflating Template");
-        //fetch template from assets
-//        this.template = helpers.loadFileFromAssets(Constants.TEMP_TEMPLATE);
-        if(dataContainer.template == null) {
+        //fetch templateName from assets
+//        this.templateName = helpers.loadFileFromAssets(Constants.TEMP_TEMPLATE);
+        if(dataContainer.templateName == null) {
             throw new TemplateException("Template not selected");
         }
 
         //set the element place holders
-        // TODO: Update this block to automatically populate all existing fields in template
+        // TODO: Update this block to automatically populate all existing fields in templateName
         // Avoid hardcoding
 
         Log.d(TAG, dataContainer.agentEmail);
         doc.getElementById("agent_name").text(dataContainer.agentName);
         doc.getElementById("agent_email").text(dataContainer.agentEmail);
         doc.getElementById("agent_phone_number").text(dataContainer.agentPhone.toString());
-        doc.getElementById("price_value").text(dataContainer.propertyPrice.toString());
-        doc.getElementById("address_value").text(dataContainer.propertyAddress);
+        doc.getElementById("property_price_value").text(dataContainer.propertyPrice.toString());
+        doc.getElementById("property_address_value").text(dataContainer.propertyAddress);
 
         /*
         * Encode entire image into a string and then display in HTML
@@ -74,32 +77,32 @@ public class Generator {
         dataContainer.tempImage.compress(Bitmap.CompressFormat.PNG, 100, tempImageStream);
         byte[] tempImageByteArray = tempImageStream.toByteArray();
         String imgToString = Base64.encodeToString(tempImageByteArray, Base64.DEFAULT);
-        doc.getElementById("banner_image").attr("src", "data:image/png;base64," + imgToString);
+        doc.getElementById("property_banner_image").attr("src", "data:image/png;base64," + imgToString);
 
         /*
         * Directly point to stored file in external storage
         * */
-
-        String imagePath = "";
-        String[] imgData = { MediaStore.Images.Media.DATA };
-        Cursor imgCursor = context.getContentResolver().query(dataContainer.tempImageURI, imgData, null, null, null);
-        if(imgCursor!=null) {
-            int index = imgCursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            imgCursor.moveToFirst();
-            imagePath = imgCursor.getString(index);
-        }
-        else
-            imagePath = dataContainer.tempImageURI.getPath();
+//
+//        String imagePath = "";
+//        String[] imgData = { MediaStore.Images.Media.DATA };
+//        Cursor imgCursor = context.getContentResolver().query(dataContainer.tempImageURI, imgData, null, null, null);
+//        if(imgCursor!=null) {
+//            int index = imgCursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//            imgCursor.moveToFirst();
+//            imagePath = imgCursor.getString(index);
+//        }
+//        else
+//            imagePath = dataContainer.tempImageURI.getPath();
 //        Log.d(TAG, base);
 //        String imagePath = "file://"+ base + "/test.jpg";
 //        Log.d(TAG, tempFile.getAbsolutePath());
-        doc.getElementById("banner_image").attr("src", imagePath);
-        assert imgCursor != null;
-        imgCursor.close();
+//        doc.getElementById("banner_image").attr("src", imagePath);
+//        assert imgCursor != null;
+//        imgCursor.close();
     }
 
     public void saveDocument(){
-        //inflate template with dataContainer
+        //inflate templateName with dataContainer
         try {
             this.inflateTemplate();
         } catch (IOException | TemplateException e) {
@@ -111,28 +114,38 @@ public class Generator {
     }
 
     public void parseTemplate() {
+        Log.d(TAG, "Template parsing started");
+        Log.d(TAG, doc.html());
+        Log.d(TAG, "Test" + doc.getElementsByTag("body").html());
+
+        for(Element test : doc.getElementsByAttribute("editable")){
+            Log.d(TAG, "ID: " + test.id() + "; editable=" + test.attr("editable"));
+        }
 
         for(Element temp : doc.getElementsByAttributeValueStarting("id", "property_")) {
-            if(temp.hasAttr("editable") && temp.attr("editable") == "image"){
+            Log.d(TAG, "Element found:" + temp.id() + "; editable=" + temp.attr("editable"));
+            if(Objects.equals(temp.attr("editable"), "image")){
+                Log.d(TAG, "Element saved: " + temp.id());
                 this.propertyImageElements.add(temp);
             }
-            if(temp.hasAttr("editable") && temp.attr("editable") == "text"){
+            if(Objects.equals(temp.attr("editable"), "text")){
+                Log.d(TAG, "Element saved: " + temp.id());
                 this.propertyTextElements.add(temp);
             }
         }
 
         for(Element temp : doc.getElementsByAttributeValueStarting("id", "agent_")) {
-            if(temp.hasAttr("editable") && temp.attr("editable") == "image"){
+            if(Objects.equals(temp.attr("editable"), "image")){
                 this.agentImageElements.add(temp);
             }
-            if(temp.hasAttr("editable") && temp.attr("editable") == "text"){
+            if(Objects.equals(temp.attr("editable"), "text")){
                 this.agentTextElements.add(temp);
             }
         }
     }
 
     /**
-     * Custom template exception class.
+     * Custom templateName exception class.
      */
     public static class TemplateException extends Exception
     {

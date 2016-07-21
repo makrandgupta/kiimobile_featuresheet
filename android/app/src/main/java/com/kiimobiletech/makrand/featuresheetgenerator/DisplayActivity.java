@@ -2,7 +2,6 @@ package com.kiimobiletech.makrand.featuresheetgenerator;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.webkit.WebView;
@@ -13,20 +12,20 @@ public class DisplayActivity extends AppCompatActivity {
     public final static String TAG = "DISPLAY";
     Helpers helpers;
     DataContainer dataContainer = DataContainer.getInstance();
-    Generator generator = Generator.getInstance(this);
+    Generator generator;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         helpers = new Helpers(getApplicationContext());
-//        setContentView(R.layout.activity_display);
-
         try {
-            generator.saveDocument();
+            generator = Generator.getInstance(getApplicationContext());
         } catch (Generator.TemplateException e) {
             e.printStackTrace();
         }
+
+        generator.saveDocument();
 
 
         WebView webView = new WebView(this);

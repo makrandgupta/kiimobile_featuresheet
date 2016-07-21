@@ -43,10 +43,11 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /*
-        * Instantiate Generator and parse template
+        * Instantiate Generator and parse templateName
         * */
         try {
             generator = Generator.getInstance(getApplicationContext());
+            Log.d(TAG, "Generator loaded");
         } catch (Generator.TemplateException e) {
             e.printStackTrace();
         }

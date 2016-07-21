@@ -4,13 +4,17 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.kiimobiletech.makrand.featuresheetgenerator.Generator;
 import com.kiimobiletech.makrand.featuresheetgenerator.R;
+
+import org.jsoup.nodes.Element;
 
 
 /**
@@ -23,10 +27,14 @@ import com.kiimobiletech.makrand.featuresheetgenerator.R;
  */
 public class AgentInfoFragment extends Fragment {
     private static final int FRAGMENT_POSITION = 0;
+    private static final String TAG = "AGENT_INFO_FRAGMENT";
 
-    EditText agentNameEditText, agentEmailEditText, agentPhoneEditText;
     DataContainer dataContainer = DataContainer.getInstance();
+    Generator generator;
+
     Button nextButton;
+    EditText agentNameEditText, agentEmailEditText, agentPhoneEditText;
+
 
 
     private OnNextListener mListener;
@@ -50,12 +58,23 @@ public class AgentInfoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            this.generator = Generator.getInstance(this.getContext());
+        } catch (Generator.TemplateException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.d(TAG, "OnCreateView INVOKED" + generator.agentTextElements.first());
+        for (Element temp : generator.agentTextElements){
+            Log.d(TAG, "tests");
+            Log.d("AgentFields", temp.id());
+        }
         view = inflater.inflate(R.layout.fragment_agent_info, container, false);
 
         nextButton = (Button) view.findViewById(R.id.nextButton);

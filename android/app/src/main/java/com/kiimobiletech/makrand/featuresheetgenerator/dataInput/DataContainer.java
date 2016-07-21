@@ -21,7 +21,7 @@ public class DataContainer {
 
     private static DataContainer instance = new DataContainer();
     public Uri tempImageURI;
-    public String template;
+    public String templateName;
 
 
     //singleton
@@ -73,10 +73,10 @@ public class DataContainer {
     }
 
     public void setTemplate(String template) {
-        this.template = template;
+        this.templateName = template;
     }
 
     public String getTemplate() {
-        return template;
+        return templateName;
     }
 }
