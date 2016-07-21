@@ -21,7 +21,7 @@ public class DataContainer {
 
     private static DataContainer instance = new DataContainer();
     public Uri tempImageURI;
-    private String template;
+    public String template;
 
 
     //singleton

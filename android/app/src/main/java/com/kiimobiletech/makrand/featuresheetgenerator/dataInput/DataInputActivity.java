@@ -4,29 +4,24 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.support.design.widget.TabLayout;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-
-import android.widget.TextView;
 
 import com.kiimobiletech.makrand.featuresheetgenerator.Constants;
 import com.kiimobiletech.makrand.featuresheetgenerator.DisplayActivity;
+import com.kiimobiletech.makrand.featuresheetgenerator.Generator;
 import com.kiimobiletech.makrand.featuresheetgenerator.R;
 
 import java.io.FileNotFoundException;
@@ -39,12 +34,23 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
     private TabLayout tabLayout;
     Bitmap imageBitmap;
 
+    Generator generator;
+
     FloatingActionButton fab;
     DataContainer dataContainer = DataContainer.getInstance();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /*
+        * Instantiate Generator and parse template
+        * */
+        try {
+            generator = Generator.getInstance(getApplicationContext());
+        } catch (Generator.TemplateException e) {
+            e.printStackTrace();
+        }
+        generator.parseTemplate();
 
         /*
         * Activity base setup
