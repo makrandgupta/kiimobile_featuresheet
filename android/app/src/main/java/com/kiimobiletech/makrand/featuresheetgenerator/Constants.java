@@ -14,4 +14,5 @@ public class Constants {
     public static final String SOURCE_GALLERY = "gallery";
     public static final String SOURCE_CAMERA = "camera";
     public static final String ARG_PLACE_HOLDER_STRING = "place_holder_string";
+    public static final int PERMISSION_ALL = 50;
 }

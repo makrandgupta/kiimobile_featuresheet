@@ -37,6 +37,7 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
     Generator generator;
 
     FloatingActionButton fab;
+    public Snackbar generateMessageSnackbar;
     DataContainer dataContainer = DataContainer.getInstance();
 
 
@@ -83,8 +84,8 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), DisplayActivity.class);
                 startActivity(intent);
-
-                Snackbar.make(view, "Will generate document in future", Snackbar.LENGTH_LONG).show();
+                generateMessageSnackbar = Snackbar.make(view, "Generating document...", Snackbar.LENGTH_INDEFINITE);
+                generateMessageSnackbar.show();
             }
         });
         if (fab != null) {
@@ -136,7 +137,7 @@ public class DataInputActivity extends AppCompatActivity implements AgentInfoFra
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-
+                    dataContainer.tempImageStream = imageStream;
                     dataContainer.tempImage = BitmapFactory.decodeStream(imageStream);
                 }
                 break;

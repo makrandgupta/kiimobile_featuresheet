@@ -41,9 +41,11 @@ public class Generator {
         context = ctxt;
         helpers = new Helpers(ctxt);
 
-        String template = helpers.loadFileFromAssets("templates/" + dataContainer.templateName);
-        doc = Jsoup.parse(template);
-        Log.d(TAG, "raw template: " + template);
+        if(doc == null) {
+            String template = helpers.loadFileFromAssets("templates/" + dataContainer.templateName);
+            doc = Jsoup.parse(template);
+            Log.d(TAG, "raw template: " + template);
+        }
 
         return instance;
     }

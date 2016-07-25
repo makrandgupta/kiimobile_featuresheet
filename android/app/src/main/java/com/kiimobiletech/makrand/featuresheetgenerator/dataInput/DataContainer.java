@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 
+import java.io.InputStream;
+
 /**
  * Created by Makrand Gupta on 2016-07-12.
  */
@@ -22,6 +24,7 @@ public class DataContainer {
     private static DataContainer instance = new DataContainer();
     public Uri tempImageURI;
     public String templateName;
+    public InputStream tempImageStream;
 
 
     //singleton
